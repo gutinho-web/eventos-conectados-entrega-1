@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  color: #202033;
+  background: #f5f5fa;
+}
+
+.cabecalho {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: #ffffff;
+  background: #4338ca;
+}
+
+.cabecalho h1 {
+  margin: 0;
+}
+
+.conteudo {
+  width: min(900px, 92%);
+  margin: 2rem auto;
+}
+
+.apresentacao {
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgb(20 20 50 / 8%);
+}
+
+.rodape {
+  padding: 1rem;
+  text-align: center;
+  color: #55556a;
+}
+
+@media (max-width: 600px) {
+  .cabecalho {
+    padding: 1.5rem 1rem;
+  }
+
+  .apresentacao {
+    padding: 1rem;
+  }
+}
