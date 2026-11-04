@@ -1,6 +1,6 @@
 # Eventos Conectados
 
-**Projeto Web Técnico | Entrega 1: Problema e estrutura inicial**
+**Projeto Web Técnico | Entrega 1 e 2**
 
 ## 1. Descrição do projeto
 
@@ -55,8 +55,6 @@ Facilitar a divulgação e a organização de festas e eventos por meio de uma p
 9. Pesquisar ou filtrar eventos por data, nome ou categoria (funcionalidade planejada).
 10. Registrar no banco de dados os usuários e eventos.
 
-> **Escopo:** as funcionalidades acima são planejadas. A Entrega 1 estabelece a proposta e a estrutura; autenticação, banco de dados e CRUD serão desenvolvidos nas entregas seguintes.
-
 ## 6. Tipos de usuários e permissões previstas
 
 | Perfil | Ações previstas |
@@ -79,22 +77,29 @@ As permissões serão verificadas no back-end por meio de middlewares. Esconder 
 8. Os dados válidos serão armazenados no MySQL e a interface será atualizada com a resposta da API.
 9. O administrador poderá moderar eventos e usuários conforme suas permissões.
 
-## 8. Tecnologias previstas
+## 8. Tecnologias utilizadas
 
-- **Front-end:** HTML5, CSS3 e JavaScript.
-- **Back-end:** Node.js e Express.
-- **Banco de dados:** MySQL.
-- **Comunicação:** API REST, JSON e Fetch API.
-- **Autenticação:** JWT.
-- **Proteção de senha:** hash com biblioteca apropriada, como bcrypt.
-- **Versionamento:** Git e GitHub.
+| Tecnologia | Utilização |
+|---|---|
+| HTML5 | Estrutura das páginas. |
+| CSS3 | Estilização da interface. |
+| JavaScript | Interatividade e comunicação com a API. |
+| Node.js | Ambiente de execução do servidor. |
+| Express | Criação das rotas e da API REST. |
+| MySQL | Banco de dados relacional. |
+| MySQL2 | Conexão entre Node.js e MySQL. |
+| JWT | Autenticação dos usuários. |
+| bcryptjs | Proteção das senhas por hash. |
+| Fetch API | Comunicação entre front-end e back-end. |
+| Git e GitHub | Versionamento e armazenamento do código. |
 
-## 9. Estrutura inicial do projeto
+## 9. Estrutura do projeto
 
 ```text
 eventos-conectados/
 ├── backend/
 │   ├── controllers/
+│   │   ├── authController.js
 │   │   └── eventosController.js
 │   ├── database/
 │   │   └── conexao.js
@@ -102,8 +107,8 @@ eventos-conectados/
 │   │   ├── autenticacaoMiddleware.js
 │   │   └── autorizacaoMiddleware.js
 │   ├── routes/
-│   │   ├── eventosRoutes.js
-│   │   └── authRoutes.js
+│   │   ├── authRoutes.js
+│   │   └── eventosRoutes.js
 │   ├── .env.example
 │   ├── .gitignore
 │   ├── package.json
@@ -120,39 +125,149 @@ eventos-conectados/
 └── README.md
 ```
 
-A organização segue a separação usada como referência no material `loja-online.zip`: rotas recebem as requisições, controllers concentram a lógica, middlewares tratam autenticação/autorização e database reúne a conexão com o banco.
+## 10. Banco de dados
 
-## 10. Planejamento das quatro entregas
+O projeto utiliza o MySQL para armazenar as informações do sistema.
 
-- **Entrega 1:** definição do problema, proposta, perfis, fluxo, README e estrutura inicial.
-- **Entrega 2:** criação das tabelas relacionadas no MySQL, cadastro/login, proteção de senhas, JWT e middlewares.
-- **Entrega 3:** CRUD de eventos integrado entre front-end, API REST e MySQL, com validações e permissões.
-- **Entrega 4:** finalização, testes, tratamento de erros, documentação completa e apresentação do sistema em funcionamento.
+Foram planejadas e criadas três tabelas principais:
 
-## 11. Como preparar o ambiente
+### Tabela `usuarios`
 
-Requisitos previstos para as próximas etapas:
-- Node.js e npm instalados.
-- MySQL Server e uma ferramenta para executar scripts SQL.
-- Git instalado.
-- Conta no GitHub.
-- Editor de código, como Visual Studio Code.
+Armazena os dados das contas cadastradas.
 
-Os comandos de instalação e execução serão documentados conforme o servidor e a conexão com o banco forem implementados nas próximas entregas.
+Principais informações:
+- ID do usuário.
+- Nome.
+- E-mail.
+- Senha armazenada em hash.
+- Perfil de acesso.
+- Situação da conta.
 
-## 12. GitHub e histórico de desenvolvimento
+### Tabela `eventos`
 
-Todo o projeto será mantido em um único repositório do GitHub durante as quatro entregas. O README será atualizado a cada etapa e o histórico deverá conter commits que descrevam as mudanças realizadas.
+Armazena os dados dos eventos cadastrados.
 
-Exemplos de mensagens de commit:
-- `docs: documenta problema e proposta do projeto`
-- `chore: cria estrutura inicial de pastas`
-- `feat: adiciona cadastro e autenticação`
-- `feat: implementa CRUD de eventos`
-- `docs: atualiza instruções de execução`
+Principais informações:
+- ID do evento.
+- ID do organizador responsável.
+- Título.
+- Descrição.
+- Categoria.
+- Local.
+- Data e horário.
+- Situação do evento.
 
-Não devem ser enviados ao repositório `node_modules`, arquivos `.env`, senhas, tokens ou credenciais privadas.
+### Tabela `inscricoes`
 
-## 13. Estado atual
+Estrutura destinada ao registro das inscrições dos usuários nos eventos, com relacionamento entre usuários e eventos.
 
-**Entrega 1: planejamento e estrutura inicial.** Os arquivos de código são apenas pontos de partida e não representam ainda um sistema completo em funcionamento.
+## 11. API e rotas de autenticação
+
+As rotas de autenticação estão organizadas no endereço `/api/auth`.
+
+| Método | Rota | Descrição |
+|---|---|---|
+| POST | `/api/auth/cadastro` | Realiza o cadastro de um usuário. |
+| POST | `/api/auth/login` | Verifica as credenciais e gera um JWT. |
+| GET | `/api/auth/me` | Retorna os dados do usuário autenticado. |
+
+O cadastro público permite criar contas com os perfis autorizados. A criação de administradores deve ocorrer por um procedimento controlado.
+
+## 12. Segurança
+
+O sistema utiliza mecanismos básicos de segurança:
+
+- Senhas armazenadas com hash utilizando bcryptjs.
+- Autenticação por meio de tokens JWT.
+- Verificação de tokens em rotas protegidas.
+- Controle de permissões por perfil de usuário.
+- Variáveis de ambiente para armazenar configurações sensíveis.
+- Arquivo `.gitignore` para evitar o envio de arquivos privados ao GitHub.
+
+O token utilizado no ambiente de desenvolvimento é armazenado no `sessionStorage` do navegador. Essa abordagem serve para testes locais e não representa, sozinha, uma solução completa de segurança para produção.
+
+## 13. Como executar o projeto localmente
+
+### Pré-requisitos
+
+- Node.js instalado.
+- MySQL instalado.
+- MySQL Workbench.
+- Visual Studio Code.
+
+### Passo 1: Criar o banco de dados
+
+Abra o MySQL Workbench e execute o script:
+
+```text
+sql/banco.sql
+```
+
+### Passo 2: Instalar as dependências
+
+Abra o terminal na pasta `backend` e execute:
+
+```bash
+npm install
+```
+
+### Passo 3: Configurar as variáveis de ambiente
+
+Copie o arquivo `.env.example` e crie um arquivo chamado `.env` na pasta `backend`.
+
+Preencha as configurações de conexão com o MySQL e a chave secreta do JWT conforme os nomes definidos no arquivo de exemplo.
+
+**Importante:** não envie o arquivo `.env` para o GitHub.
+
+### Passo 4: Iniciar o servidor
+
+Dentro da pasta `backend`, execute:
+
+```bash
+npm run dev
+```
+
+O servidor será iniciado em:
+
+```text
+http://localhost:3000
+```
+
+### Passo 5: Verificar o funcionamento
+
+Acesse no navegador:
+
+```text
+http://localhost:3000/api/health
+```
+
+Para acessar a interface, abra o arquivo:
+
+```text
+frontend/index.html
+```
+
+## 14. Planejamento das entregas
+
+| Entrega | Desenvolvimento |
+|---|---|
+| Entrega 1 | Definição do problema, proposta de solução, público-alvo, funcionalidades, fluxo e estrutura inicial do projeto. |
+| Entrega 2 | Criação do banco de dados, cadastro e login, proteção de senhas, JWT e middlewares de autenticação e autorização. |
+| Entrega 3 | Implementação do CRUD de eventos, integração entre front-end, API REST e MySQL, validações e controle de permissões. |
+| Entrega 4 | Finalização do sistema, testes, tratamento de erros, documentação e apresentação do projeto. |
+
+## 15. Estado atual do projeto
+
+**Entrega 1: Concluída.**
+
+Foi realizada a definição do problema, da proposta de solução, dos perfis de usuários, das funcionalidades previstas e da estrutura inicial do projeto.
+
+**Entrega 2: Desenvolvida.**
+
+Foi criada a estrutura do banco de dados, implementados os recursos de cadastro e login, proteção de senhas com bcryptjs, autenticação JWT e middlewares de controle de acesso.
+
+Os recursos devem ser executados e testados no ambiente local para verificar seu funcionamento.
+
+**Próxima etapa: Entrega 3.**
+
+Será desenvolvido o CRUD de eventos, permitindo cadastrar, consultar, editar e excluir eventos, com integração ao banco de dados e controle de permissões.

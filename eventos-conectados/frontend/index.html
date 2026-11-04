@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Planejamento do sistema Eventos Conectados.">
   <title>Eventos Conectados</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="js/script.js" defer></script>
@@ -15,15 +14,40 @@
   </header>
 
   <main class="conteudo">
-    <section class="apresentacao">
-      <h2>Encontre seu próximo evento</h2>
-      <p>Esta é a estrutura inicial da interface. A listagem será conectada à API nas próximas entregas.</p>
-      <p id="status-api" role="status">Verificando a estrutura inicial...</p>
+    <section class="cartao">
+      <h2>Criar conta</h2>
+      <form id="form-cadastro">
+        <label for="cadastro-nome">Nome</label>
+        <input id="cadastro-nome" name="nome" required minlength="2" maxlength="100">
+        <label for="cadastro-email">E-mail</label>
+        <input id="cadastro-email" name="email" type="email" required>
+        <label for="cadastro-senha">Senha (mínimo 8 caracteres)</label>
+        <input id="cadastro-senha" name="senha" type="password" minlength="8" maxlength="72" required>
+        <label for="cadastro-perfil">Perfil</label>
+        <select id="cadastro-perfil" name="perfil">
+          <option value="participante">Participante</option>
+          <option value="organizador">Organizador</option>
+        </select>
+        <button type="submit">Cadastrar</button>
+      </form>
     </section>
+
+    <section class="cartao">
+      <h2>Entrar</h2>
+      <form id="form-login">
+        <label for="login-email">E-mail</label>
+        <input id="login-email" name="email" type="email" required>
+        <label for="login-senha">Senha</label>
+        <input id="login-senha" name="senha" type="password" required>
+        <button type="submit">Entrar</button>
+      </form>
+        <button id="btn-perfil" type="button" class="secundario">Consultar minha conta</button>
+        <button id="btn-sair" type="button" class="secundario">Sair</button>
+    </section>
+
+    <p id="mensagem" role="status" aria-live="polite"></p>
   </main>
 
-  <footer class="rodape">
-    <p>Projeto acadêmico • Entrega 1</p>
-  </footer>
+  <footer class="rodape"><p>Projeto acadêmico</p></footer>
 </body>
 </html>
